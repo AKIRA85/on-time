@@ -1,0 +1,36 @@
+{
+  "name": "On Time - Meeting Launcher",
+  "version": "0.0.1",
+  "description": "Automatically opens your Google Calendar meeting links one minute before they start.",
+  "permissions": [
+    "identity",
+    "alarms",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "On Time",
+    "default_icon": {
+      "16": "images/icon-16.png",
+      "32": "images/icon-32.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "oauth2": {
+    "client_id": "792189130460-57d512kifokljumem4omhnnck8dq7kru.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly"
+    ]
+  },
+  "manifest_version": 3
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On Time</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>On Time</h1>
+            <div style="display: flex; gap: 8px;">
+                <button id="settingsBtn" title="Settings">⚙️</button>
+                <button id="refreshBtn" title="Refresh Events">↻</button>
+            </div>
+        </header>
+
+        <div id="auth-section">
+            <button id="loginBtn" class="primary-btn">Sign in with Google</button>
+        </div>
+
+        <div id="app-section" class="hidden">
+            <h2>Next Meeting</h2>
+            <div id="next-meeting-card">
+                <p class="placeholder">No upcoming meetings found.</p>
+            </div>
+
+            <h2 id="later-heading" class="hidden">Later Today</h2>
+            <div id="later-meetings-list" class="meetings-list"></div>
+        </div>
+
+        <div id="settings-view" class="hidden">
+            <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                <button id="backBtn" class="icon-btn">←</button>
+                <h2 style="margin: 0 0 0 8px;">Settings</h2>
+            </div>
+
+            <div class="setting-item">
+                <label for="newWindowToggle">Open in new window</label>
+                <input type="checkbox" id="newWindowToggle">
+            </div>
+            <div class="setting-item">
+                <label for="tentativeToggle">Include tentative events</label>
+                <input type="checkbox" id="tentativeToggle">
+            </div>
+            <p class="settings-note">
+                Note: Meetings with <strong>DECLINED</strong> or <strong>INVITED</strong> status won't be auto-opened.
+            </p>
+        </div>
+    </div>
+    <template id="meeting-card-template">
+        <div class="meeting-item">
+            <div class="meeting-row">
+                <span class="meeting-title"></span>
+                <span class="time-badge"></span>
+            </div>
+            <div class="meeting-extra">
+                <span class="status-badge"></span>
+                <span class="countdown"></span>
+            </div>
+        </div>
+    </template>
+    <script src="popup.js"></script>
+</body>
+
+</html>
