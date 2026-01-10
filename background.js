@@ -39,23 +39,41 @@ chrome.runtime.onInstalled.addListener(() => {
     getAuthToken(false).then(() => fetchEvents()).catch(() => { });
 });
 
+// Helper function for login flow
+function performLogin(sendResponse) {
+    getAuthToken(true)
+        .then(token => {
+            fetchEvents();
+            sendResponse({ success: true, token });
+        })
+        .catch(error => sendResponse({ success: false, error: error.message }));
+}
+
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'LOGIN') {
-        getAuthToken(true)
-            .then(token => {
-                fetchEvents(); // Fetch immediately after login
-                sendResponse({ success: true, token });
-            })
-            .catch(error => sendResponse({ success: false, error: error.message }));
-        return true; // async response
+        performLogin(sendResponse);
+        return true;
+    } else if (request.action === 'RELOGIN') {
+        // Clear cached token first, then get a new one
+        if (userToken) {
+            chrome.identity.removeCachedAuthToken({ token: userToken }, () => {
+                userToken = null;
+                performLogin(sendResponse);
+            });
+        } else {
+            performLogin(sendResponse);
+        }
+        return true;
     } else if (request.action === 'CHECK_AUTH') {
         getAuthToken(false)
             .then(token => sendResponse({ success: true, token }))
             .catch(() => sendResponse({ success: false }));
         return true;
     } else if (request.action === 'REFRESH_EVENTS') {
-        fetchEvents().then(count => sendResponse({ success: true, count }));
+        fetchEvents()
+            .then(count => sendResponse({ success: true, count }))
+            .catch(error => sendResponse({ success: false, error: error.message }));
         return true;
     }
 });
@@ -74,7 +92,10 @@ function getAuthToken(interactive) {
 }
 
 async function fetchEvents() {
-    if (!userToken) return 0;
+    throw new Error('Session expired. Please sign in again.');
+    if (!userToken) {
+        throw new Error('Not signed in. Please sign in again.');
+    }
 
     const now = new Date();
     const endOfDay = new Date(now);
@@ -94,11 +115,14 @@ async function fetchEvents() {
         });
 
         if (!response.ok) {
-            if (response.status === 401) {
+            if (response.status === 401 || response.status === 403) {
                 chrome.identity.removeCachedAuthToken({ token: userToken }, () => { });
                 userToken = null;
+                throw new Error('Session expired. Please sign in again.');
+            } else if (response.status >= 500) {
+                throw new Error('Google Calendar is temporarily unavailable.');
             }
-            throw new Error('Failed to fetch events');
+            throw new Error('Failed to fetch events.');
         }
 
         const data = await response.json();
@@ -106,7 +130,11 @@ async function fetchEvents() {
         return count;
     } catch (err) {
         console.error(err);
-        return 0;
+        // Re-throw with a user-friendly message if it's a network error
+        if (err.name === 'TypeError' && err.message.includes('fetch')) {
+            throw new Error('Network error. Please check your connection.');
+        }
+        throw err;
     }
 }
 

@@ -66,7 +66,7 @@ button {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 #next-meeting-card {
@@ -258,4 +258,22 @@ button {
   font-size: 12px;
   margin-top: 12px;
   text-align: center;
+}
+
+.error-banner {
+  color: #c5221f;
+  background-color: #fce8e6;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-banner .text-btn {
+  color: #1967d2;
+  font-weight: 500;
 }

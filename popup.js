@@ -75,14 +75,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const appError = document.getElementById('app-error');
+    const appErrorText = document.getElementById('app-error-text');
+    const reSignInBtn = document.getElementById('reSignInBtn');
+
+    // Helper to show app error
+    function showAppError(message, isAuthError = false) {
+        appErrorText.textContent = message;
+        appError.classList.remove('hidden');
+        if (isAuthError) {
+            reSignInBtn.classList.remove('hidden');
+        } else {
+            reSignInBtn.classList.add('hidden');
+        }
+    }
+
+    // Helper to clear app error
+    function clearAppError() {
+        appError.classList.add('hidden');
+        appErrorText.textContent = '';
+        reSignInBtn.classList.add('hidden');
+    }
+
+    // Re-sign-in button handler
+    if (reSignInBtn) {
+        reSignInBtn.addEventListener('click', () => {
+            clearAppError();
+            // Use RELOGIN to clear cached token and get a fresh one
+            chrome.runtime.sendMessage({ action: 'RELOGIN' }, (response) => {
+                if (response && response.success) {
+                    // Refresh events after re-authentication
+                    chrome.runtime.sendMessage({ action: 'REFRESH_EVENTS' }, () => {
+                        loadMeetings();
+                    });
+                } else {
+                    showAppError(response?.error || 'Sign in failed. Please try again.', true);
+                }
+            });
+        });
+    }
+
     if (refreshBtn) {
         refreshBtn.addEventListener('click', () => {
             console.log('Refreshing events...');
             refreshBtn.style.animation = 'spin 1s linear infinite';
+            clearAppError();
+
             chrome.runtime.sendMessage({ action: 'REFRESH_EVENTS' }, (response) => {
                 setTimeout(() => {
                     refreshBtn.style.animation = '';
-                    loadMeetings();
+                    if (response && response.success) {
+                        loadMeetings();
+                    } else {
+                        console.error('Refresh failed:', response?.error);
+                        const errorMsg = response?.error || 'Failed to refresh events. Please try again.';
+                        const isAuthError = errorMsg.includes('sign in') || errorMsg.includes('Session expired');
+                        showAppError(errorMsg, isAuthError);
+                        loadMeetings(); // Still try to load cached meetings
+                    }
                 }, 500);
             });
         });
