@@ -114,13 +114,15 @@
             explains how our Chrome Extension uses your data.</p>
 
         <h2>1. Data Collection and Usage</h2>
-        <p><strong>On Time</strong> accesses your Google Calendar data solely for the purpose of identifying upcoming
+        <p><strong>On Time</strong> accesses your Google Calendar events data solely for the purpose of identifying
+            upcoming
             meetings and automatically opening them for you. We define "meeting links" as URLs found within the location
             or description fields of your calendar events.</p>
         <ul>
-            <li><strong>Google Calendar API:</strong> We use the Google Calendar API to fetch your events. This happens
+            <li><strong>Google Calendar API:</strong> We use the restricted Google Calendar API scope to fetch your
+                events. This happens
                 directly within your browser.</li>
-            <li><strong>Local Processing:</strong> All data processing happens locally on your device. We do not
+            <li><strong>Local Processing:</strong> All event processing happens locally on your device. We do not
                 transmit your calendar data to any external servers or third parties.</li>
         </ul>
 
