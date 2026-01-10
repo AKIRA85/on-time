@@ -10,12 +10,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const loginError = document.getElementById('login-error');
+
     loginBtn.addEventListener('click', () => {
+        // Clear previous error
+        loginError.classList.add('hidden');
+        loginError.textContent = '';
+
         chrome.runtime.sendMessage({ action: 'LOGIN' }, (response) => {
             if (response && response.success) {
                 toggleUI(true);
             } else {
-                console.error("Login failed:", response.error);
+                console.error("Login failed:", response?.error);
+                // Show user-friendly error message
+                let errorMsg = 'Sign in failed. Please try again.';
+                if (response?.error) {
+                    if (response.error.includes('canceled') || response.error.includes('cancelled')) {
+                        errorMsg = 'Sign in was cancelled.';
+                    } else if (response.error.includes('network')) {
+                        errorMsg = 'Network error. Please check your connection.';
+                    }
+                }
+                loginError.textContent = errorMsg;
+                loginError.classList.remove('hidden');
             }
         });
     });

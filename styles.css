@@ -248,3 +248,14 @@ button {
     transform: rotate(360deg);
   }
 }
+
+/* Error Messages */
+.error-message {
+  color: #c5221f;
+  background-color: #fce8e6;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 12px;
+  text-align: center;
+}
