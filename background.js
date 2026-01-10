@@ -92,7 +92,6 @@ function getAuthToken(interactive) {
 }
 
 async function fetchEvents() {
-    throw new Error('Session expired. Please sign in again.');
     if (!userToken) {
         throw new Error('Not signed in. Please sign in again.');
     }
