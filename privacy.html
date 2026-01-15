@@ -108,7 +108,7 @@
 
     <main>
         <h1>Privacy Policy</h1>
-        <p><strong>Last updated: December 31, 2025</strong></p>
+        <p><strong>Last updated: January 15, 2026</strong></p>
 
         <p><strong>On Time</strong> ("we", "our", or "us") is dedicated to protecting your privacy. This Privacy Policy
             explains how our Chrome Extension uses your data.</p>
@@ -134,15 +134,43 @@
             <li><strong>storage:</strong> To save your preferences locally (e.g., enable/disable status).</li>
         </ul>
 
-        <h2>3. Data Storage</h2>
-        <p>We do not store your calendar events permanently. Events are fetched, processed to find links, and then
-            discarded or temporarily held in your browser's memory to schedule the opening action. Preferences are
-            stored in your browser's local sync storage.</p>
+        <h2>3. Data Protection</h2>
+        <p>We implement the following measures to protect your data:</p>
+        <ul>
+            <li><strong>No External Transmission:</strong> Your Google Calendar data never leaves your device. All
+                processing occurs locally within your browser's secure environment.</li>
+            <li><strong>OAuth 2.0 Authentication:</strong> We use Google's secure OAuth 2.0 protocol for
+                authentication. We never see, store, or have access to your Google password.</li>
+            <li><strong>Minimal Data Access:</strong> We request read-only access to your calendar events. We cannot
+                modify, create, or delete any of your calendar data.</li>
+            <li><strong>Secure Token Storage:</strong> Authentication tokens are stored securely using Chrome's
+                built-in identity API, which uses encrypted storage managed by the browser.</li>
+            <li><strong>HTTPS Only:</strong> All communication with Google's APIs occurs over encrypted HTTPS
+                connections.</li>
+        </ul>
 
-        <h2>4. Third-Party Sharing</h2>
+        <h2>4. Data Retention and Deletion</h2>
+        <p>We are committed to minimizing data retention:</p>
+        <ul>
+            <li><strong>No Permanent Storage:</strong> We do not permanently store any of your Google Calendar event
+                data. Events are fetched, processed to extract meeting links, and immediately discarded from memory.
+            </li>
+            <li><strong>Temporary Memory Only:</strong> Calendar data is held temporarily in your browser's memory
+                solely to schedule meeting link openings. This data is automatically cleared when you close your
+                browser or the extension is disabled.</li>
+            <li><strong>Preferences Only:</strong> The only data stored persistently is your extension preferences
+                (e.g., enabled/disabled status), which does not include any Google user data.</li>
+            <li><strong>Revoking Access:</strong> You can revoke the extension's access to your Google account at any
+                time through your <a href="https://myaccount.google.com/permissions" target="_blank">Google Account
+                    Permissions</a> page. Upon revocation, all associated authentication tokens are invalidated.</li>
+            <li><strong>Uninstallation:</strong> When you uninstall the extension, all locally stored preferences are
+                automatically removed by Chrome. No residual data remains.</li>
+        </ul>
+
+        <h2>5. Third-Party Sharing</h2>
         <p>We do not share, sell, or transfer your data to any third parties.</p>
 
-        <h2>5. Contact Us</h2>
+        <h2>6. Contact Us</h2>
         <p>If you have questions about this policy, please contact us via our support page on the Chrome Web Store.</p>
     </main>
 
