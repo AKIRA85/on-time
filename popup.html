@@ -11,20 +11,25 @@
 
 <body>
     <div class="container">
-        <header>
-            <h1>On Time</h1>
-            <div style="display: flex; gap: 8px;">
-                <button id="settingsBtn" title="Settings"><i class="fa-solid fa-gear"></i></button>
-                <button id="refreshBtn" title="Refresh Events"><i class="fa-solid fa-rotate"></i></button>
-            </div>
-        </header>
-
+        <!-- Sign-in Screen -->
         <div id="auth-section">
-            <button id="loginBtn" class="primary-btn">Sign in with Google</button>
-            <p id="login-error" class="error-message hidden"></p>
+            <div class="signin-content">
+                <h1>On Time</h1>
+                <p class="signin-subtitle">Never miss a meeting again</p>
+                <button id="loginBtn" class="primary-btn">Sign in with Google</button>
+                <p id="login-error" class="error-message hidden"></p>
+            </div>
         </div>
 
+        <!-- Main App Screen -->
         <div id="app-section" class="hidden">
+            <header>
+                <h1>On Time</h1>
+                <div style="display: flex; gap: 8px;">
+                    <button id="settingsBtn" title="Settings"><i class="fa-solid fa-gear"></i></button>
+                    <button id="refreshBtn" title="Refresh Events"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+            </header>
             <div id="app-error" class="error-banner hidden">
                 <span id="app-error-text"></span>
                 <button id="reSignInBtn" class="text-btn hidden">Sign in again</button>

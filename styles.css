@@ -69,6 +69,32 @@ button {
   display: none !important;
 }
 
+/* Sign-in Screen */
+#auth-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  padding: 32px 16px;
+}
+
+.signin-content {
+  text-align: center;
+  width: 100%;
+}
+
+.signin-content h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.signin-subtitle {
+  color: #5f6368;
+  font-size: 13px;
+  margin: 0 0 24px 0;
+}
+
 #next-meeting-card {
   background-color: var(--card-bg);
   padding: 12px;
