@@ -29,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         errorMsg = 'Sign in was cancelled.';
                     } else if (response.error.includes('network')) {
                         errorMsg = 'Network error. Please check your connection.';
+                    } else if (response.error.includes('Service has been disabled for this account')) {
+                        // Corporate account with restricted API access
+                        loginError.innerHTML = 'Your organization has restricted this app. <a href="https://ontime-meeting.in/#troubleshooting" target="_blank" style="color: #4a9eff;">Learn how to fix this</a>';
+                        loginError.classList.remove('hidden');
+                        return;
                     }
                 }
                 loginError.textContent = errorMsg;

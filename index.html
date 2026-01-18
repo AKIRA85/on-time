@@ -171,6 +171,7 @@
             On Time
         </a>
         <div class="nav-links">
+            <a href="#troubleshooting">Troubleshooting</a>
             <a href="privacy.html">Privacy Policy</a>
         </div>
     </nav>
@@ -203,6 +204,41 @@
             <h3>Smart Detection</h3>
             <p>Intelligently finds links in location and description fields, handling various meeting platforms with
                 ease.</p>
+        </div>
+    </section>
+
+    <section id="troubleshooting" class="features"
+        style="background-color: var(--secondary-bg); max-width: 100%; padding: 4rem 2rem;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; text-align: center;">Troubleshooting</h2>
+
+            <div class="feature-card" style="margin-bottom: 1.5rem;">
+                <h3 style="color: #ea4335;">🔒 "Your organization has restricted this app"</h3>
+                <p style="margin: 1rem 0;">If you're using a corporate Google Workspace account, your organization's IT
+                    administrator may have restricted access to third-party apps or the Google Calendar API.</p>
+
+                <h4 style="margin-top: 1.5rem;">For Users:</h4>
+                <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+                    <li>Try using a personal Google account (@gmail.com) instead</li>
+                    <li>Contact your IT administrator and share the information below</li>
+                </ul>
+
+                <h4>For IT Administrators:</h4>
+                <p style="margin: 0.5rem 0;">To enable this extension for your organization:</p>
+                <ol style="margin: 0.5rem 0 0 1.5rem;">
+                    <li><strong>Allow the Chrome Extension:</strong><br>
+                        Go to <code>Admin Console → Devices → Chrome → Apps & extensions</code> and add "On Time -
+                        Meeting Launcher" from the Chrome Web Store.</li>
+                    <li style="margin-top: 0.75rem;"><strong>Enable API Access:</strong><br>
+                        Go to <code>Admin Console → Security → API Controls → App Access Control</code> and add the
+                        OAuth Client ID:<br>
+                        <code
+                            style="background: #f1f3f4; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin-top: 4px;">792189130460-ocgob7va4iu294139labq29rvrtd0est.apps.googleusercontent.com</code>
+                    </li>
+                    <li style="margin-top: 0.75rem;"><strong>Grant Trusted Access:</strong><br>
+                        Mark the app as "Trusted" to allow the <code>calendar.events.readonly</code> scope.</li>
+                </ol>
+            </div>
         </div>
     </section>
 
