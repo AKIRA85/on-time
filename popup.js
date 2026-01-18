@@ -11,33 +11,83 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const loginError = document.getElementById('login-error');
+    const loginErrorText = document.getElementById('login-error-text');
+    const loginErrorDetailsSection = document.getElementById('login-error-details-section');
+    const loginToggleDetailsBtn = document.getElementById('loginToggleDetailsBtn');
+    const loginErrorDetails = document.getElementById('login-error-details');
+    const loginErrorDetailsText = document.getElementById('login-error-details-text');
+    const loginCopyErrorBtn = document.getElementById('loginCopyErrorBtn');
+
+    // Helper to show login error with optional details
+    function showLoginError(message, rawError = null) {
+        loginErrorText.innerHTML = message;
+        loginError.classList.remove('hidden');
+
+        if (rawError) {
+            loginErrorDetailsSection.classList.remove('hidden');
+            loginErrorDetailsText.textContent = rawError;
+            loginErrorDetails.classList.add('hidden');
+            loginToggleDetailsBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show details';
+        } else {
+            loginErrorDetailsSection.classList.add('hidden');
+        }
+    }
+
+    // Helper to clear login error
+    function clearLoginError() {
+        loginError.classList.add('hidden');
+        loginErrorText.textContent = '';
+        loginErrorDetailsSection.classList.add('hidden');
+    }
+
+    // Toggle login error details
+    if (loginToggleDetailsBtn) {
+        loginToggleDetailsBtn.addEventListener('click', () => {
+            const isHidden = loginErrorDetails.classList.contains('hidden');
+            loginErrorDetails.classList.toggle('hidden');
+            loginToggleDetailsBtn.innerHTML = isHidden ? '<i class="fa-solid fa-chevron-up"></i> Hide details' : '<i class="fa-solid fa-chevron-down"></i> Show details';
+        });
+    }
+
+    // Copy login error details
+    if (loginCopyErrorBtn) {
+        loginCopyErrorBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(loginErrorDetailsText.textContent).then(() => {
+                loginCopyErrorBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                loginCopyErrorBtn.classList.add('copied');
+                setTimeout(() => {
+                    loginCopyErrorBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+                    loginCopyErrorBtn.classList.remove('copied');
+                }, 2000);
+            });
+        });
+    }
 
     loginBtn.addEventListener('click', () => {
         // Clear previous error
-        loginError.classList.add('hidden');
-        loginError.textContent = '';
+        clearLoginError();
 
         chrome.runtime.sendMessage({ action: 'LOGIN' }, (response) => {
             if (response && response.success) {
                 toggleUI(true);
             } else {
                 console.error("Login failed:", response?.error);
+                const rawError = response?.error || 'Unknown error';
                 // Show user-friendly error message
                 let errorMsg = 'Sign in failed. Please try again.';
+                let showDetails = true;
                 if (response?.error) {
                     if (response.error.includes('canceled') || response.error.includes('cancelled')) {
                         errorMsg = 'Sign in was cancelled.';
+                        showDetails = false; // No need for details on cancel
                     } else if (response.error.includes('network')) {
                         errorMsg = 'Network error. Please check your connection.';
                     } else if (response.error.includes('Service has been disabled for this account')) {
                         // Corporate account with restricted API access
-                        loginError.innerHTML = 'Your organization has restricted this app. <a href="https://ontime-meeting.in/#troubleshooting" target="_blank" style="color: #4a9eff;">Learn how to fix this</a>';
-                        loginError.classList.remove('hidden');
-                        return;
+                        errorMsg = 'Your organization has restricted this app. <a href="https://ontime-meeting.in/#troubleshooting" target="_blank" style="color: #4a9eff;">Learn how to fix this</a>';
                     }
                 }
-                loginError.textContent = errorMsg;
-                loginError.classList.remove('hidden');
+                showLoginError(errorMsg, showDetails ? rawError : null);
             }
         });
     });
@@ -83,15 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const appError = document.getElementById('app-error');
     const appErrorText = document.getElementById('app-error-text');
     const reSignInBtn = document.getElementById('reSignInBtn');
+    const toggleDetailsBtn = document.getElementById('toggleDetailsBtn');
+    const errorDetails = document.getElementById('error-details');
+    const errorDetailsText = document.getElementById('error-details-text');
+    const copyErrorBtn = document.getElementById('copyErrorBtn');
 
-    // Helper to show app error
-    function showAppError(message, isAuthError = false) {
+    // Helper to show app error with optional raw error details
+    function showAppError(message, isAuthError = false, rawError = null) {
         appErrorText.textContent = message;
         appError.classList.remove('hidden');
         if (isAuthError) {
             reSignInBtn.classList.remove('hidden');
         } else {
             reSignInBtn.classList.add('hidden');
+        }
+
+        // Set raw error details for debugging
+        if (rawError) {
+            errorDetailsText.textContent = rawError;
+            errorDetails.classList.add('hidden');
+            toggleDetailsBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show details';
         }
     }
 
@@ -100,6 +161,31 @@ document.addEventListener('DOMContentLoaded', () => {
         appError.classList.add('hidden');
         appErrorText.textContent = '';
         reSignInBtn.classList.add('hidden');
+        errorDetails.classList.add('hidden');
+        toggleDetailsBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show details';
+    }
+
+    // Toggle error details visibility
+    if (toggleDetailsBtn) {
+        toggleDetailsBtn.addEventListener('click', () => {
+            const isHidden = errorDetails.classList.contains('hidden');
+            errorDetails.classList.toggle('hidden');
+            toggleDetailsBtn.innerHTML = isHidden ? '<i class="fa-solid fa-chevron-up"></i> Hide details' : '<i class="fa-solid fa-chevron-down"></i> Show details';
+        });
+    }
+
+    // Copy error details to clipboard
+    if (copyErrorBtn) {
+        copyErrorBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(errorDetailsText.textContent).then(() => {
+                copyErrorBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                copyErrorBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyErrorBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+                    copyErrorBtn.classList.remove('copied');
+                }, 2000);
+            });
+        });
     }
 
     // Re-sign-in button handler
@@ -133,9 +219,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         loadMeetings();
                     } else {
                         console.error('Refresh failed:', response?.error);
-                        const errorMsg = response?.error || 'Failed to refresh events. Please try again.';
-                        const isAuthError = errorMsg.includes('sign in') || errorMsg.includes('Session expired');
-                        showAppError(errorMsg, isAuthError);
+                        const rawError = response?.error || 'Unknown error';
+                        let errorMsg = 'Failed to refresh events. Please try again.';
+                        if (rawError.includes('sign in') || rawError.includes('Session expired')) {
+                            errorMsg = rawError;
+                        }
+                        const isAuthError = rawError.includes('sign in') || rawError.includes('Session expired');
+                        showAppError(errorMsg, isAuthError, rawError);
                         loadMeetings(); // Still try to load cached meetings
                     }
                 }, 500);

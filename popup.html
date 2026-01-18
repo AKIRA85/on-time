@@ -17,7 +17,19 @@
                 <h1>On Time</h1>
                 <p class="signin-subtitle">Never miss a meeting again</p>
                 <button id="loginBtn" class="primary-btn">Sign in with Google</button>
-                <p id="login-error" class="error-message hidden"></p>
+                <div id="login-error" class="error-message hidden">
+                    <p id="login-error-text"></p>
+                    <div class="error-details-section hidden" id="login-error-details-section">
+                        <button id="loginToggleDetailsBtn" class="text-btn"><i class="fa-solid fa-chevron-down"></i>
+                            Show details</button>
+                        <div id="login-error-details" class="error-details hidden">
+                            <pre id="login-error-details-text"></pre>
+                            <button id="loginCopyErrorBtn" class="copy-btn" title="Copy error details">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -33,6 +45,16 @@
             <div id="app-error" class="error-banner hidden">
                 <span id="app-error-text"></span>
                 <button id="reSignInBtn" class="text-btn hidden">Sign in again</button>
+                <div class="error-details-section">
+                    <button id="toggleDetailsBtn" class="text-btn"><i class="fa-solid fa-chevron-down"></i> Show
+                        details</button>
+                    <div id="error-details" class="error-details hidden">
+                        <pre id="error-details-text"></pre>
+                        <button id="copyErrorBtn" class="copy-btn" title="Copy error details">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
             </div>
             <h2>Next Meeting</h2>
             <div id="next-meeting-card">

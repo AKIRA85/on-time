@@ -303,3 +303,54 @@ button {
   color: #1967d2;
   font-weight: 500;
 }
+
+/* Error Details Section */
+.error-details-section {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.error-details {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.error-details pre {
+  margin: 0 0 8px 0;
+  font-size: 11px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: #5f6368;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.copy-btn {
+  background-color: #1967d2;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-btn:hover {
+  background-color: #1557b0;
+}
+
+.copy-btn.copied {
+  background-color: #137333;
+}
+
+.error-message .error-details-section {
+  margin-top: 8px;
+}
+
+.error-message p {
+  margin: 0;
+}
